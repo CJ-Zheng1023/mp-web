@@ -1,0 +1,79 @@
+{
+  "addUser": {
+    "code": 1
+  },
+  "login": {
+    "token": "token111",
+    "user": {
+      "username": "zheng",
+      "createTime": "2018.7.13 13:13:13"
+    }
+  },
+  "ipc": {
+    "ipcResult": {
+      "IC": "A08",
+      "UTCN": "中文含义",
+      "UTEN": "english"
+    }
+  },
+  "listPatent": {
+    "patentList": [
+      {
+        "NRD_AN": "CN123",
+        "PA": "申请人1",
+        "IN": "发明人1",
+        "TI": "发明名称1",
+        "CCODE": "国省代码1",
+        "CNAME": "国省名称1"
+      },
+      {
+        "NRD_AN": "CN123112",
+        "PA": "申请人2",
+        "IN": "发明人2",
+        "TI": "发明名称2",
+        "CCODE": "国省代码2",
+        "CNAME": "国省名称2"
+      }
+    ],
+    "pagination": {
+      "total": 2,
+      "start": 0,
+      "size": 10
+    }
+  },
+  "addMark": {
+    "flag": true
+  },
+  "delete": {
+    "flag": true
+  },
+  "listMark": {
+    "markList": [
+      {
+        "id": "1",
+        "type": "1",
+        "word": "word1"
+      },
+      {
+        "id": "2",
+        "type": "1",
+        "word": "word2"
+      },
+      {
+        "id": "3",
+        "type": "3",
+        "word": "word3"
+      },
+      {
+        "id": "4",
+        "type": "2",
+        "word": "word4"
+      },
+      {
+        "id": "5",
+        "type": "4",
+        "word": "word5"
+      }
+    ]
+  }
+}
