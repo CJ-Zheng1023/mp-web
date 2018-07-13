@@ -5,5 +5,5 @@
   "/search/patent/list/:ipc\\?start=:start&size=:size" : "/listPatent",
   "/mark/add" : "/addMark",
   "/mark/delete" : "/delete",
-  "/list/:an\\?token=:token" : "/listMark"
+  "/mark/list/:an\\?token=:token" : "/listMark"
 }
