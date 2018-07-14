@@ -6,9 +6,24 @@ body{
   background-attachment: fixed;
   background-size: cover;
 }
+.page.page-login{
+  position: relative;
+  min-height: 450px;
+
+}
+.page.page-register{
+  position: relative;
+  min-height: 500px;
+}
 .page{
-  width: 100%;
   height: 100%;
+}
+.page.page-search{
+  /*background-color: #eceff1;*/
+}
+.page-search .main{
+  max-width: 1120px;
+  margin: 30px auto;
 }
 .form-wrapper{
   width: 360px;

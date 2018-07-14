@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from 'components/Login'
 import Register from 'components/Register'
 import Search from 'components/Search'
+import Result from 'components/Result'
 
 Vue.use(Router)
 
@@ -30,6 +31,14 @@ let router = new Router({
       component: Search,
       meta: {
         title: '检索'
+      }
+    },
+    {
+      path: '/search/:ipc',
+      name: 'Result',
+      component: Result,
+      meta: {
+        title: '检索结果'
       }
     }
   ]

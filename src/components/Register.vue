@@ -83,9 +83,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .page.page-register{
-    position: relative;
-    min-height: 500px;
-  }
-</style>

@@ -104,8 +104,4 @@ export default {
     color: #333;
     text-decoration: none;
   }
-  .page.page-login{
-    position: relative;
-    min-height: 450px;
-  }
 </style>
