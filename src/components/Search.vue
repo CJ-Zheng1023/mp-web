@@ -23,7 +23,6 @@
 <script>
 import SearchHeader from './SearchHeader'
 import { mapActions, mapState } from 'vuex'
-import cache from '../assets/scripts/cache'
 export default {
   data () {
     return {
@@ -47,10 +46,7 @@ export default {
     ]),
     onSubmit () {
       let ipc = this.form.ipc
-      this.search(ipc).then(() => {
-        cache.cacheIpc(ipc)
-        this.$router.push({path: `/search/${ipc}`})
-      })
+      this.$router.push({path: `/search/${ipc}`})
     },
     setFormIpc (ipc) {
       this.form.ipc = ipc

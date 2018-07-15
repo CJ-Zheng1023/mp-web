@@ -14,7 +14,7 @@
     </search-header>
     <div class="main">
       <el-row :gutter="30">
-        <el-col :sm="{span: 8}">
+        <el-col :span="8" v-if="ipcResult">
           <div class="ipc-explain">
             <el-card class="box-card">
               <span slot="header" class="card-header-ipc">{{ipcResult.IC}}的中文含义</span>
@@ -30,11 +30,14 @@
             </el-card>
           </div>
         </el-col>
-        <el-col :sm="{span: 16}">
+        <el-col :span="16" v-if="patentList">
           <div class="patent-list">
             <el-row :gutter="15">
-              <el-col v-for="patent in patentList" :key="patent.NRD_AN" :sm="{span: 8}">
+              <el-col v-for="patent in patentList" :key="patent.NRD_AN" :span="8">
                 <el-card class="box-card">
+                  <div slot="header" class="card-header-patent">
+                    <i class="fa fa-expand" @click="showDialog(patent)"></i>
+                  </div>
                   <div class="card-body">
                     <p class="an">{{patent.NRD_AN}}</p>
                     <el-tooltip placement="bottom-start">
@@ -46,7 +49,7 @@
               </el-col>
             </el-row>
             <el-row :gutter="15">
-              <el-col :sm="{span: 24}">
+              <el-col :span="24">
                 <div class="pagination">
                   <el-pagination
                     @current-change="clickPagination"
@@ -62,10 +65,12 @@
         </el-col>
       </el-row>
     </div>
+    <patent-dialog :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
   </div>
 </template>
 <script>
 import SearchHeader from './SearchHeader'
+import PatentDialog from './PatentDialog'
 import { mapState, mapActions } from 'vuex'
 import cache from '../assets/scripts/cache'
 export default {
@@ -74,7 +79,9 @@ export default {
     return {
       form: {
         ipc: ''
-      }
+      },
+      dialogVisible: false,
+      currentPatent: {}
     }
   },
   computed: {
@@ -85,6 +92,10 @@ export default {
     ])
   },
   methods: {
+    showDialog (patent) {
+      this.currentPatent = patent
+      this.dialogVisible = true
+    },
     clickPagination (curPage) {
       this.searchPatentList({
         ipc: this.form.ipc,
@@ -94,10 +105,7 @@ export default {
     },
     onSubmit () {
       let ipc = this.form.ipc
-      this.search(ipc).then(() => {
-        cache.cacheIpc(ipc)
-        this.$router.push({path: `/search/${ipc}`})
-      })
+      this.$router.push({path: `/search/${ipc}`})
     },
     ...mapActions('searchModule', [
       'searchPatentList',
@@ -105,18 +113,22 @@ export default {
     ])
   },
   components: {
-    SearchHeader
-  },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.form.ipc = to.params.ipc
-    })
+    SearchHeader,
+    PatentDialog
   },
   beforeRouteUpdate (to, from, next) {
-    this.form.ipc = to.params.ipc
-    this.search(this.form.ipc).then(() => {
-      cache.cacheIpc(this.form.ipc)
+    let ipc = to.params.ipc
+    this.form.ipc = ipc
+    this.search(ipc).then(() => {
+      cache.cacheIpc(ipc)
       next()
+    })
+  },
+  created () {
+    let ipc = this.$route.params.ipc
+    this.form.ipc = ipc
+    this.search(ipc).then(() => {
+      cache.cacheIpc(ipc)
     })
   }
 }
@@ -129,6 +141,14 @@ export default {
   }
   .box-card{
     margin-bottom: 20px;
+  }
+  .box-card .card-header-patent{
+    text-align: right;
+  }
+  .box-card .card-header-patent i{
+    font-size: 14px;
+    color: #a0a0a0;
+    cursor: pointer;
   }
   .card-body .an, .card-header-ipc{
     color: #0366d6;

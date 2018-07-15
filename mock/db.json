@@ -6,13 +6,14 @@
     "token": "token111",
     "user": {
       "username": "zheng",
-      "createTime": "2018.7.13 13:13:13"
+      "createTime": "2018.7.13 13:13:13",
+      "userId": "zzz"
     },
     "code": 1
   },
   "ipc": {
     "ipcResult": {
-      "IC": "A11",
+      "IC": "A113",
       "UTCN": "中文含义",
       "UTEN": "english"
     }
@@ -20,7 +21,7 @@
   "listPatent": {
     "patentList": [
       {
-        "NRD_AN": "CN333",
+        "NRD_AN": "CN55",
         "PA": "申请人1111",
         "IN": "发明人1",
         "TI": "发明名称1",
@@ -69,27 +70,32 @@
       {
         "id": "1",
         "type": "1",
-        "word": "word1"
+        "word": "word1",
+        "userId": "zzz"
       },
       {
         "id": "2",
         "type": "1",
-        "word": "word2"
+        "word": "word2",
+        "userId": "fff"
       },
       {
         "id": "3",
         "type": "3",
-        "word": "word3"
+        "word": "word3",
+        "userId": "fff"
       },
       {
         "id": "4",
         "type": "2",
-        "word": "word4"
+        "word": "word4",
+        "userId": "zzz"
       },
       {
         "id": "5",
         "type": "4",
-        "word": "word5"
+        "word": "word5",
+        "userId": "zzz"
       }
     ]
   }
