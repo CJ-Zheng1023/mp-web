@@ -1,4 +1,5 @@
 import axios from '../../config/axios'
+import Vue from 'vue'
 const MODULE_CONTEXT = '/user'
 export default {
   namespaced: true,
@@ -14,12 +15,12 @@ export default {
   },
   mutations: {
     login (state, data) {
-      state.loginCode = data.code
-      state.user = data.user
-      state.token = data.token
+      Vue.set(state, 'loginCode', data.code)
+      Vue.set(state, 'user', data.user)
+      Vue.set(state, 'token', data.token)
     },
     register (state, data) {
-      state.registerCode = data.code
+      Vue.set(state, 'registerCode', data.code)
     }
   },
   actions: {

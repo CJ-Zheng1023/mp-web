@@ -66,13 +66,11 @@ export default {
                 title: '错误信息',
                 message: '您输入的账号不存在'
               })
-              return false
             } else if (code === 3) {
               this.$notify.error({
                 title: '错误信息',
                 message: '您输入的用户名或密码有误'
               })
-              return false
             } else {
               window.localStorage.setItem('token', this.token)
               this.$router.push({path: 'search'})
@@ -103,5 +101,9 @@ export default {
   .register > p > a{
     color: #333;
     text-decoration: none;
+  }
+  .page.page-login{
+    position: relative;
+    min-height: 450px;
   }
 </style>

@@ -12,9 +12,9 @@
           </el-form-item>
         </el-form>
         <div class="tags">
-          <el-tag type="success">标签二</el-tag>
-          <el-tag type="success">标签二</el-tag>
-          <el-tag type="success">标签二</el-tag>
+          <div class="tag-item" @click="setFormIpc(ipc)" v-for="ipc in historyIpcs" :key="ipc">
+            <el-tag type="primary">{{ipc}}</el-tag>
+          </div>
         </div>
       </el-card>
     </div>
@@ -22,20 +22,44 @@
 </template>
 <script>
 import SearchHeader from './SearchHeader'
+import { mapActions, mapState } from 'vuex'
+import cache from '../assets/scripts/cache'
 export default {
   data () {
     return {
       form: {
         ipc: ''
-      }
+      },
+      historyIpcs: []
     }
+  },
+  computed: {
+    ...mapState('searchModule', [
+      'ipcResult'
+    ])
   },
   components: {
     SearchHeader
   },
   methods: {
+    ...mapActions('searchModule', [
+      'search'
+    ]),
     onSubmit () {
-      this.$router.push({path: `/search/${this.form.ipc}`})
+      let ipc = this.form.ipc
+      this.search(ipc).then(() => {
+        cache.cacheIpc(ipc)
+        this.$router.push({path: `/search/${ipc}`})
+      })
+    },
+    setFormIpc (ipc) {
+      this.form.ipc = ipc
+    }
+  },
+  created () {
+    let cache = window.localStorage.getItem('history_ipcs')
+    if (cache) {
+      Array.prototype.push.apply(this.historyIpcs, cache.split(','))
     }
   }
 }
@@ -49,7 +73,15 @@ export default {
     width: 400px;
   }
   .tags{
-    text-align: center;
-    margin-bottom: 100px;
+    width: 430px;
+    margin: 0 auto 100px auto;
+  }
+  .tag-item{
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .el-tag{
+    margin-bottom: 5px;
+    cursor: pointer;
   }
 </style>

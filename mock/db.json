@@ -12,7 +12,7 @@
   },
   "ipc": {
     "ipcResult": {
-      "IC": "A08",
+      "IC": "A11",
       "UTCN": "中文含义",
       "UTEN": "english"
     }
@@ -20,8 +20,8 @@
   "listPatent": {
     "patentList": [
       {
-        "NRD_AN": "CN123",
-        "PA": "申请人1",
+        "NRD_AN": "CN333",
+        "PA": "申请人1111",
         "IN": "发明人1",
         "TI": "发明名称1",
         "CCODE": "国省代码1",
@@ -34,12 +34,28 @@
         "TI": "发明名称2",
         "CCODE": "国省代码2",
         "CNAME": "国省名称2"
+      },
+      {
+        "NRD_AN": "CN1234",
+        "PA": "申请人3",
+        "IN": "发明人3",
+        "TI": "发明名称3",
+        "CCODE": "国省代码3",
+        "CNAME": "国省名称3"
+      },
+      {
+        "NRD_AN": "CN12354",
+        "PA": "申请人as3",
+        "IN": "发明人3s",
+        "TI": "发明名称fa3",
+        "CCODE": "国省代码ad3",
+        "CNAME": "国省名称a3"
       }
     ],
     "pagination": {
-      "total": 2,
+      "total": 30,
       "start": 0,
-      "size": 10
+      "size": 12
     }
   },
   "addMark": {

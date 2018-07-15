@@ -2,7 +2,7 @@
   "/user/add" : "/addUser",
   "/user/login" : "/login",
   "/search/ipc/:ipc\\?token=:token" : "/ipc",
-  "/search/patent/list/:ipc\\?start=:start&size=:size" : "/listPatent",
+  "/search/patent/list/:ipc\\?start=:start&size=:size&token=:token" : "/listPatent",
   "/mark/add" : "/addMark",
   "/mark/delete" : "/delete",
   "/mark/list/:an\\?token=:token" : "/listMark"

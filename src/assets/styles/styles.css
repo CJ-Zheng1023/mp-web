@@ -19,7 +19,7 @@ body{
   height: 100%;
 }
 .page.page-search{
-  /*background-color: #eceff1;*/
+  min-width: 1120px;
 }
 .page-search .main{
   max-width: 1120px;

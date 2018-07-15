@@ -4,7 +4,7 @@
       <h3>标引平台</h3>
     </div>
     <div v-if="ifSearch" class="input-wrapper">
-      <el-input placeholder="请输入IPC号" prefix-icon="el-icon-search" v-model="ipc"/>
+      <slot name="input"></slot>
     </div>
     <div class="dropdown-wrapper">
       <el-dropdown trigger="click">
@@ -21,9 +21,9 @@
 </template>
 <script>
 export default {
+  name: 'SearchHeader',
   props: [
-    'ifSearch',
-    'ipc'
+    'ifSearch'
   ]
 }
 </script>
@@ -44,7 +44,7 @@ export default {
     float: left;
   }
   .navbar .input-wrapper{
-    margin: 5px 0 0 40px;
+    margin: 5px 0 0 180px;
     float: left;
   }
   .navbar .dropdown-wrapper{
