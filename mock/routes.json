@@ -1,6 +1,7 @@
 {
   "/user/add" : "/addUser",
   "/user/login" : "/login",
+  "/user/logout" : "/logout",
   "/search/ipc/:ipc\\?token=:token" : "/ipc",
   "/search/patent/list/:ipc\\?start=:start&size=:size&token=:token" : "/listPatent",
   "/mark/add" : "/addMark",

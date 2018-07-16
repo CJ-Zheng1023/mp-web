@@ -7,24 +7,46 @@
       <slot name="input"></slot>
     </div>
     <div class="dropdown-wrapper">
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" @command="dropdownCommand">
       <span class="el-dropdown-link">
         用户名<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>排行榜</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'SearchHeader',
   props: [
     'ifSearch'
-  ]
+  ],
+  methods: {
+    ...mapActions('userModule', [
+      'deleteToken'
+    ]),
+    dropdownCommand (command) {
+      if (command === 'logout') {
+        this.deleteToken().then((data) => {
+          if (data.flag) {
+            window.localStorage.removeItem('token')
+            window.localStorage.removeItem('userId')
+            this.$router.push({path: `/`})
+          } else {
+            this.$message({
+              type: 'error',
+              message: '退出失败'
+            })
+          }
+        })
+      }
+    }
+  }
 }
 </script>
 <style>

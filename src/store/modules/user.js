@@ -59,6 +59,22 @@ export default {
           reject(e)
         })
       })
+    },
+    deleteToken () {
+      return new Promise((resolve, reject) => {
+        axios({
+          url: MODULE_CONTEXT + '/logout',
+          method: 'get'
+          /* params: {
+            token: window.localStorage.getItem('token')
+          } */
+        }).then(response => {
+          resolve(response.data)
+        }).catch(e => {
+          console.log(e)
+          reject(e)
+        })
+      })
     }
   }
 }

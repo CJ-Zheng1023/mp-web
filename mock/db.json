@@ -11,6 +11,9 @@
     },
     "code": 1
   },
+  "logout": {
+    "flag": true
+  },
   "ipc": {
     "ipcResult": {
       "IC": "A113",
