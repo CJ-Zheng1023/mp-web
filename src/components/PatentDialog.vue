@@ -303,6 +303,21 @@ export default {
     },
     markWord (type, event) {
       let word = this._getSelectText()
+      let flag = false
+      for (let i = 0, len = this.markList.length; i < len; i++) {
+        let item = this.markList[i]
+        if (word + type === item.word + type) {
+          flag = true
+          break
+        }
+      }
+      if (flag) {
+        this.$alert(`${word}已添加为标引词`, '提示', {
+          confirmButtonText: '确定',
+          type: 'warning'
+        })
+        return
+      }
       this.markList.push({
         type,
         word,

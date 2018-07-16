@@ -9,7 +9,7 @@
     <div class="dropdown-wrapper">
       <el-dropdown trigger="click" @command="dropdownCommand">
       <span class="el-dropdown-link">
-        用户名<i class="el-icon-arrow-down el-icon--right"></i>
+        {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>排行榜</el-dropdown-item>
@@ -26,6 +26,11 @@ export default {
   props: [
     'ifSearch'
   ],
+  data () {
+    return {
+      username: window.localStorage.getItem('username')
+    }
+  },
   methods: {
     ...mapActions('userModule', [
       'deleteToken'

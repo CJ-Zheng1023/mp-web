@@ -74,6 +74,7 @@ export default {
             } else {
               window.localStorage.setItem('token', this.token)
               window.localStorage.setItem('userId', this.user.userId)
+              window.localStorage.setItem('username', this.user.username)
               this.$router.push({path: 'search'})
             }
             this.ifLoading = false
