@@ -30,6 +30,11 @@
             </el-card>
           </div>
         </el-col>
+        <el-col :span="8" v-else>
+          <el-card class="box-card">
+            <p>空空如也~</p>
+          </el-card>
+        </el-col>
         <el-col :span="16" v-if="patentList">
           <div class="patent-list" v-loading="patentLoading">
             <el-row :gutter="15">
@@ -62,6 +67,11 @@
               </el-col>
             </el-row>
           </div>
+        </el-col>
+        <el-col :span="16" v-else>
+          <el-card class="box-card">
+            <p>空空如也~</p>
+          </el-card>
         </el-col>
       </el-row>
     </div>
