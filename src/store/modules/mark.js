@@ -30,11 +30,11 @@ export default {
       return new Promise((resolve, reject) => {
         axios({
           url: MODULE_CONTEXT + '/delete',
-          method: 'get'
-          /* params: {
+          method: 'post',
+          params: {
             markId,
             token: window.localStorage.getItem('token')
-          } */
+          }
         }).then(response => {
           resolve(response.data)
         }).catch(e => {
@@ -45,15 +45,14 @@ export default {
     },
     addMark ({commit, dispatch}, marks) {
       let markList = JSON.parse(JSON.stringify(marks))
-      console.log(markList)
       return new Promise((resolve, reject) => {
         axios({
           url: MODULE_CONTEXT + '/add',
-          method: 'get'
-          /* params: {
+          method: 'post',
+          params: {
             markList: JSON.stringify(markList),
             token: window.localStorage.getItem('token')
-          } */
+          }
         }).then(response => {
           resolve(response.data)
         }).catch(e => {

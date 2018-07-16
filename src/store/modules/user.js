@@ -28,11 +28,11 @@ export default {
       return new Promise((resolve, reject) => {
         axios({
           url: MODULE_CONTEXT + '/login',
-          method: 'get'
-          /* params: {
+          method: 'post',
+          params: {
             username,
             password
-          } */
+          }
         }).then(response => {
           commit('login', response.data)
           resolve()
@@ -46,11 +46,11 @@ export default {
       return new Promise((resolve, reject) => {
         axios({
           url: MODULE_CONTEXT + '/add',
-          method: 'get'
-          /* params: {
+          method: 'post',
+          params: {
             username,
             password
-          } */
+          }
         }).then(response => {
           commit('register', response.data)
           resolve()
@@ -64,10 +64,10 @@ export default {
       return new Promise((resolve, reject) => {
         axios({
           url: MODULE_CONTEXT + '/logout',
-          method: 'get'
-          /* params: {
+          method: 'post',
+          params: {
             token: window.localStorage.getItem('token')
-          } */
+          }
         }).then(response => {
           resolve(response.data)
         }).catch(e => {
