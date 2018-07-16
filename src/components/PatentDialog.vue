@@ -306,7 +306,7 @@ export default {
       let flag = false
       for (let i = 0, len = this.markList.length; i < len; i++) {
         let item = this.markList[i]
-        if (word + type === item.word + type) {
+        if (word + type === item.word + item.type) {
           flag = true
           break
         }

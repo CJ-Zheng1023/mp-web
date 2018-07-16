@@ -41,6 +41,7 @@ export default {
           if (data.flag) {
             window.localStorage.removeItem('token')
             window.localStorage.removeItem('userId')
+            window.localStorage.removeItem('username')
             this.$router.push({path: `/`})
           } else {
             this.$message({
