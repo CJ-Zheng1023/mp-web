@@ -6,7 +6,7 @@ export default {
   state () {
     return {
       addFlag: '',
-      markList: ''
+      markList: []
     }
   },
   mutations: {
@@ -32,7 +32,9 @@ export default {
           url: MODULE_CONTEXT + '/delete',
           method: 'post',
           data: {
-            markId,
+            markId
+          },
+          params: {
             token: window.localStorage.getItem('token')
           }
         }).then(response => {
@@ -50,7 +52,9 @@ export default {
           url: MODULE_CONTEXT + '/add',
           method: 'post',
           data: {
-            markList: JSON.stringify(markList),
+            markList: JSON.stringify(markList)
+          },
+          params: {
             token: window.localStorage.getItem('token')
           }
         }).then(response => {

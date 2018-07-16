@@ -60,20 +60,20 @@ export default {
             username: this.ruleForm.username,
             password: this.ruleForm.password
           }).then(() => {
-            let code = this.loginCode
-            if (Number(code) === 2) {
+            let code = Number(this.loginCode)
+            if (code === 2) {
               this.$notify.error({
                 title: '错误信息',
                 message: '您输入的账号不存在'
               })
-            } else if (Number(code) === 3) {
+            } else if (code === 3) {
               this.$notify.error({
                 title: '错误信息',
                 message: '您输入的用户名或密码有误'
               })
             } else {
               window.localStorage.setItem('token', this.token)
-              window.localStorage.setItem('userId', this.user.userId)
+              window.localStorage.setItem('userId', this.user.id)
               window.localStorage.setItem('username', this.user.username)
               this.$router.push({path: 'search'})
             }

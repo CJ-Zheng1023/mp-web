@@ -188,7 +188,7 @@ export default {
         return !mark.id
       })
       this.addMark(marks).then(data => {
-        if (data.flag) {
+        if (data) {
           this.$alert('添加成功', '提示', {
             confirmButtonText: '确定',
             type: 'success'
@@ -245,7 +245,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.deleteMark(mark.id).then((data) => {
-          if (data.flag) {
+          if (data) {
             this.$message({
               type: 'success',
               message: '删除成功!'
@@ -320,8 +320,7 @@ export default {
       }
       this.markList.push({
         type,
-        word,
-        userId: window.localStorage.getItem('userId')
+        word
       })
     },
     _getSelectText () {

@@ -46,7 +46,7 @@ export default {
     ]),
     onSubmit () {
       let ipc = this.form.ipc
-      this.$router.push({path: `/search/${ipc}`})
+      this.$router.push({path: `/search/${ipc.replace(/\//g, '-')}`})
     },
     setFormIpc (ipc) {
       this.form.ipc = ipc

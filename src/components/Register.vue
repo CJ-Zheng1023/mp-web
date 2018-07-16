@@ -55,7 +55,7 @@ export default {
             username: this.ruleForm.username,
             password: this.ruleForm.password
           }).then(() => {
-            let code = this.registerCode
+            let code = Number(this.registerCode)
             if (code === 2) {
               this.$notify.error({
                 title: '错误信息',

@@ -113,7 +113,7 @@ export default {
     clickPagination (curPage) {
       this.patentLoading = true
       this.searchPatentList({
-        ipc: this.form.ipc,
+        ipc: this.form.ipc.replace(/\//g, '-'),
         size: this.pagination.size,
         start: (curPage - 1) * this.pagination.size
       }).then(() => {
@@ -122,7 +122,7 @@ export default {
     },
     onSubmit () {
       let ipc = this.form.ipc
-      this.$router.push({path: `/search/${ipc}`})
+      this.$router.push({path: `/search/${ipc.replace(/\//g, '-')}`})
     },
     prevPatent () {
       let index = this._getCurrentPatentIndex()
@@ -159,7 +159,7 @@ export default {
   },
   beforeRouteUpdate (to, from, next) {
     let ipc = to.params.ipc
-    this.form.ipc = ipc
+    this.form.ipc = ipc.replace(/-/g, '/')
     this.pageLoading = true
     this.search(ipc).then(() => {
       cache.cacheIpc(ipc)
@@ -169,7 +169,7 @@ export default {
   },
   created () {
     let ipc = this.$route.params.ipc
-    this.form.ipc = ipc
+    this.form.ipc = ipc.replace(/-/g, '/')
     this.pageLoading = true
     this.search(ipc).then(() => {
       cache.cacheIpc(ipc)
