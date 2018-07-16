@@ -8,8 +8,8 @@
       </div>
       <div class="dialog-body">
         <div class="actions">
-          <span class="prev"><i class="fa fa-arrow-left"></i>上一篇</span>
-          <span class="next">下一篇<i class="fa fa-arrow-right"></i></span>
+          <span @click="prevPatent" class="prev"><i class="fa fa-arrow-left"></i>上一篇</span>
+          <span @click="nextPatent" class="next">下一篇<i class="fa fa-arrow-right"></i></span>
         </div>
         <el-row :gutter="30">
           <el-col :span="10">
@@ -29,25 +29,25 @@
                   <div class="marks">
                     <h4>发明名称</h4>
                     <p>
-                      <el-tag class="mark-item" v-for="item in tiWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in tiWords" :key="item.id">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>申请人</h4>
                     <p>
-                      <el-tag class="mark-item" v-for="item in paWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in paWords" :key="item.id">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>发明人</h4>
                     <p>
-                      <el-tag class="mark-item" v-for="item in inWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in inWords" :key="item.id">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>国省代码</h4>
                     <p>
-                      <el-tag class="mark-item" v-for="item in cnameWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in cnameWords" :key="item.id">{{item.word}}</el-tag>
                     </p>
                   </div>
                 </div>
@@ -96,11 +96,13 @@ import { mapState, mapActions } from 'vuex'
 export default {
   props: {
     visible: Boolean,
-    patent: Object
+    patent: Object,
+    message: String
   },
   data () {
     return {
       filterValue: 1,
+      closable: false,
       filterOptions: [
         {
           label: '全部标引',
@@ -159,22 +161,69 @@ export default {
     filterMarks (value) {
       let userId = window.localStorage.getItem('userId')
       if (value === 1) {
+        this.closable = false
         this.showMarks = this.markList
       } else if (value === 2) {
+        this.closable = true
         this.showMarks = this.markList.filter(mark => userId === mark.userId)
       } else if (value === 3) {
+        this.closable = false
         this.showMarks = this.markList.filter(mark => userId !== mark.userId)
       }
     },
+    closeMark (mark) {
+      this.$confirm('此操作将删除该标引词, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteMark(mark.id).then((data) => {
+          if (data.flag) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.showMarkList(this.patent.NRD_AN).then(() => {
+              this.showMarks = this.markList
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '删除失败!'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    prevPatent () {
+      this.$emit('prev')
+    },
+    nextPatent () {
+      this.$emit('next')
+    },
     ...mapActions('markModule', [
-      'showMarkList'
+      'showMarkList',
+      'deleteMark'
     ])
   },
   watch: {
-    visible (newValue, oldValue) {
-      if (newValue) {
+    patent (newValue, oldValue) {
+      if (newValue.NRD_AN !== oldValue.NRD_AN) {
         this.showMarkList(this.patent.NRD_AN).then(() => {
           this.showMarks = this.markList
+        })
+      }
+    },
+    message (newValue, oldValue) {
+      if (newValue) {
+        this.$message({
+          type: 'warning',
+          message: `${newValue}`.split(':')[0]
         })
       }
     }

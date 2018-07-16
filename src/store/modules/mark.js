@@ -6,7 +6,6 @@ export default {
   state () {
     return {
       addFlag: '',
-      deleteFlag: '',
       markList: ''
     }
   },
@@ -21,6 +20,23 @@ export default {
         axios.get(MODULE_CONTEXT + `/list/${an}?token=${window.localStorage.getItem('token')}`).then(response => {
           commit('showMarkList', response.data)
           resolve()
+        }).catch(e => {
+          console.log(e)
+          reject(e)
+        })
+      })
+    },
+    deleteMark ({commit}, markId) {
+      return new Promise((resolve, reject) => {
+        axios({
+          url: MODULE_CONTEXT + '/delete',
+          method: 'get'
+          /* params: {
+            markId,
+            token: window.localStorage.getItem('token')
+          } */
+        }).then(response => {
+          resolve(response.data)
         }).catch(e => {
           console.log(e)
           reject(e)

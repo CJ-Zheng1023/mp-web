@@ -65,7 +65,7 @@
         </el-col>
       </el-row>
     </div>
-    <patent-dialog :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
+    <patent-dialog :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
   </div>
 </template>
 <script>
@@ -81,7 +81,8 @@ export default {
         ipc: ''
       },
       dialogVisible: false,
-      currentPatent: {}
+      currentPatent: {},
+      message: ''
     }
   },
   computed: {
@@ -106,6 +107,30 @@ export default {
     onSubmit () {
       let ipc = this.form.ipc
       this.$router.push({path: `/search/${ipc}`})
+    },
+    prevPatent () {
+      let index = this._getCurrentPatentIndex()
+      if (index === 0) {
+        this.message = `已经是第一篇文献了:${+new Date()}`
+      } else {
+        this.message = ''
+        this._setCurrentPatent(index - 1)
+      }
+    },
+    nextPatent () {
+      let index = this._getCurrentPatentIndex()
+      if (index === this.patentList.length - 1) {
+        this.message = `已经是最后一篇文献了:${+new Date()}`
+      } else {
+        this.message = ''
+        this._setCurrentPatent(index + 1)
+      }
+    },
+    _getCurrentPatentIndex () {
+      return this.patentList.indexOf(this.currentPatent)
+    },
+    _setCurrentPatent (index) {
+      this.currentPatent = this.patentList[index]
     },
     ...mapActions('searchModule', [
       'searchPatentList',
