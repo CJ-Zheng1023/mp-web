@@ -61,12 +61,12 @@ export default {
             password: this.ruleForm.password
           }).then(() => {
             let code = this.loginCode
-            if (code === 2) {
+            if (Number(code) === 2) {
               this.$notify.error({
                 title: '错误信息',
                 message: '您输入的账号不存在'
               })
-            } else if (code === 3) {
+            } else if (Number(code) === 3) {
               this.$notify.error({
                 title: '错误信息',
                 message: '您输入的用户名或密码有误'

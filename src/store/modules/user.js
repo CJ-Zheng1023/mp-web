@@ -26,13 +26,9 @@ export default {
   actions: {
     login: ({commit}, {username, password}) => {
       return new Promise((resolve, reject) => {
-        axios({
-          url: MODULE_CONTEXT + '/login',
-          method: 'post',
-          params: {
-            username,
-            password
-          }
+        axios.post(MODULE_CONTEXT + '/login', {
+          username,
+          password
         }).then(response => {
           commit('login', response.data)
           resolve()
@@ -47,7 +43,7 @@ export default {
         axios({
           url: MODULE_CONTEXT + '/add',
           method: 'post',
-          params: {
+          data: {
             username,
             password
           }

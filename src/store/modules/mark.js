@@ -31,7 +31,7 @@ export default {
         axios({
           url: MODULE_CONTEXT + '/delete',
           method: 'post',
-          params: {
+          data: {
             markId,
             token: window.localStorage.getItem('token')
           }
@@ -49,7 +49,7 @@ export default {
         axios({
           url: MODULE_CONTEXT + '/add',
           method: 'post',
-          params: {
+          data: {
             markList: JSON.stringify(markList),
             token: window.localStorage.getItem('token')
           }
