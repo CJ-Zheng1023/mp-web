@@ -201,9 +201,11 @@ export default {
       })
     },
     prevPatent () {
+      this.filterValue = 1
       this.$emit('prev')
     },
     nextPatent () {
+      this.filterValue = 1
       this.$emit('next')
     },
     ...mapActions('markModule', [

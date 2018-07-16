@@ -180,6 +180,9 @@ export default {
     font-size: 16px;
     font-weight: 600;
   }
+  .card-body .an, .card-body .ti{
+    margin-top: 0;
+  }
   .card-body{
     font-size: 14px;
   }
