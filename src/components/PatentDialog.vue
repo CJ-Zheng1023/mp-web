@@ -29,25 +29,25 @@
                   <div class="marks">
                     <h4>发明名称</h4>
                     <p>
-                      <el-tag :type="item.id ? 'primary' : 'warning'" class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in tiWords" :key="item.word + item.type">{{item.word}}</el-tag>
-                    </p>
-                  </div>
-                  <div class="marks">
-                    <h4>申请人</h4>
-                    <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in paWords" :key="item.word + item.type">{{item.word}}</el-tag>
+                      <el-tag :disable-transitions=true :type="item.id ? 'primary' : 'warning'" class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in tiWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>发明人</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in inWords" :key="item.word + item.type">{{item.word}}</el-tag>
+                      <el-tag :disable-transitions=true :type="item.id ? 'primary' : 'warning'"  class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in inWords" :key="item.word + item.type">{{item.word}}</el-tag>
+                    </p>
+                  </div>
+                  <div class="marks">
+                    <h4>申请人</h4>
+                    <p>
+                      <el-tag :disable-transitions=true :type="item.id ? 'primary' : 'warning'"  class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in paWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>国省代码</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in cnameWords" :key="item.word + item.type">{{item.word}}</el-tag>
+                      <el-tag :disable-transitions=true :type="item.id ? 'primary' : 'warning'"  class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in cnameWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                 </div>
@@ -67,12 +67,12 @@
                     <div class="content" tabindex='-1' @keyup.18="markWord(1, $event)">{{patent.TI}}</div>
                   </div>
                   <div class="patent-item">
-                    <label>申请人:</label>
-                    <div class="content" tabindex='-1' @keyup.18="markWord(2, $event)">{{patent.PA}}</div>
+                    <label>发明人:</label>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(2, $event)">{{patent.IN}}</div>
                   </div>
                   <div class="patent-item">
-                    <label>发明人:</label>
-                    <div class="content" tabindex='-1' @keyup.18="markWord(3, $event)">{{patent.IN}}</div>
+                    <label>申请人:</label>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(3, $event)">{{patent.PA}}</div>
                   </div>
                   <div class="patent-item">
                     <label>国省:</label>
@@ -85,8 +85,8 @@
         </el-row>
       </div>
       <div class="dialog-footer">
-        <el-button >取消</el-button>
-        <el-button type="primary">保存标引词</el-button>
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button :loading="btnLoading" type="primary" @click="onSubmit" :disabled="saved" >保存标引词</el-button>
       </div>
     </div>
   </div>
@@ -97,13 +97,15 @@ export default {
   props: {
     visible: Boolean,
     patent: Object,
-    message: String
+    message: String,
+    ipc: String
   },
   data () {
     return {
       filterValue: 1,
       closable: false,
       loading: false,
+      btnLoading: false,
       filterOptions: [
         {
           label: '全部标引',
@@ -117,14 +119,35 @@ export default {
           label: '他人标引',
           value: 3
         }
-      ],
-      showMarks: []
+      ]
     }
   },
   computed: {
     ...mapState('markModule', [
       'markList'
     ]),
+    saved () {
+      let flag = true
+      for (let i = 0, length = this.markList.length; i < length; i++) {
+        let item = this.markList[i]
+        if (!item.id) {
+          flag = false
+          break
+        }
+      }
+      return flag
+    },
+    showMarks () {
+      let userId = window.localStorage.getItem('userId')
+      let value = this.filterValue
+      if (value === 1) {
+        return this.markList
+      } else if (value === 2) {
+        return this.markList.filter(mark => userId === mark.userId)
+      } else if (value === 3) {
+        return this.markList.filter(mark => userId !== mark.userId)
+      }
+    },
     tiWords () {
       let marks = this.showMarks
       if (!marks) {
@@ -155,27 +178,65 @@ export default {
     }
   },
   methods: {
+    onSubmit () {
+      this.btnLoading = true
+      let marks = this.markList.filter(mark => {
+        if (!mark.id) {
+          mark['ipc'] = this.ipc
+          mark['an'] = this.patent.NRD_AN
+        }
+        return !mark.id
+      })
+      this.addMark(marks).then(data => {
+        if (data.flag) {
+          this.$alert('添加成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
+          }).then(action => {
+            this.loading = true
+            this.showMarkList(this.patent.NRD_AN).then(() => {
+              this.loading = false
+              this.btnLoading = false
+            })
+          })
+        } else {
+          this.$alert('添加成功', '提示', {
+            confirmButtonText: '确定',
+            type: 'error'
+          }).then(action => {
+            this.btnLoading = false
+          })
+        }
+      })
+    },
     closeDialog () {
-      this.$emit('close')
-      this.filterValue = 1
+      if (!this.saved) {
+        this.$confirm('您尚有未保存的标引词, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$emit('close')
+          this.filterValue = 1
+        }).catch(() => {
+        })
+      } else {
+        this.$emit('close')
+        this.filterValue = 1
+      }
     },
     filterMarks (value) {
-      let userId = window.localStorage.getItem('userId')
       if (value === 1) {
         this.closable = false
-        this.showMarks = this.markList
       } else if (value === 2) {
         this.closable = true
-        this.showMarks = this.markList.filter(mark => userId === mark.userId)
       } else if (value === 3) {
         this.closable = false
-        this.showMarks = this.markList.filter(mark => userId !== mark.userId)
       }
     },
     closeMark (mark) {
       if (!mark.id) {
-        // this.markList.splice(this.markList.indexOf(mark), 1)
-        this.showMarks.splice(this.showMarks.indexOf(mark), 1)
+        this.markList.splice(this.markList.indexOf(mark), 1)
         return
       }
       this.$confirm('此操作将删除该标引词, 是否继续?', '提示', {
@@ -209,16 +270,40 @@ export default {
       })
     },
     prevPatent () {
-      this.filterValue = 1
-      this.$emit('prev')
+      if (!this.saved) {
+        this.$confirm('您尚有未保存的标引词, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.filterValue = 1
+          this.$emit('prev')
+        }).catch(() => {
+        })
+      } else {
+        this.filterValue = 1
+        this.$emit('prev')
+      }
     },
     nextPatent () {
-      this.filterValue = 1
-      this.$emit('next')
+      if (!this.saved) {
+        this.$confirm('您尚有未保存的标引词, 是否离开?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.filterValue = 1
+          this.$emit('next')
+        }).catch(() => {
+        })
+      } else {
+        this.filterValue = 1
+        this.$emit('next')
+      }
     },
     markWord (type, event) {
       let word = this._getSelectText()
-      this.showMarks.push({
+      this.markList.push({
         type,
         word,
         userId: window.localStorage.getItem('userId')
@@ -235,7 +320,8 @@ export default {
     },
     ...mapActions('markModule', [
       'showMarkList',
-      'deleteMark'
+      'deleteMark',
+      'addMark'
     ])
   },
   watch: {
@@ -243,7 +329,6 @@ export default {
       if (newValue.NRD_AN !== oldValue.NRD_AN) {
         this.loading = true
         this.showMarkList(this.patent.NRD_AN).then(() => {
-          this.showMarks = this.markList
           this.loading = false
         })
       }

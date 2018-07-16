@@ -6,7 +6,7 @@ export default {
   state: {
     data () {
       return {
-        ipcResult: '',
+        ipcResult: {},
         patentList: '',
         pagination: ''
       }

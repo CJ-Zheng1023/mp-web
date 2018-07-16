@@ -75,7 +75,8 @@
         </el-col>
       </el-row>
     </div>
-    <patent-dialog :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
+    <patent-dialog v-if="ipcResult" :ipc="ipcResult.IC" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
+    <patent-dialog v-else :ipc="''" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
   </div>
 </template>
 <script>
