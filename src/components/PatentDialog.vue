@@ -29,25 +29,25 @@
                   <div class="marks">
                     <h4>发明名称</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in tiWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag :type="item.id ? 'primary' : 'warning'" class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in tiWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>申请人</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in paWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in paWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>发明人</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in inWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in inWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                   <div class="marks">
                     <h4>国省代码</h4>
                     <p>
-                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in cnameWords" :key="item.id">{{item.word}}</el-tag>
+                      <el-tag class="mark-item" @close="closeMark(item)" :closable="closable" v-for="item in cnameWords" :key="item.word + item.type">{{item.word}}</el-tag>
                     </p>
                   </div>
                 </div>
@@ -64,19 +64,19 @@
                   </div>
                   <div class="patent-item">
                     <label>发明名称:</label>
-                    <div class="content">{{patent.TI}}</div>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(1, $event)">{{patent.TI}}</div>
                   </div>
                   <div class="patent-item">
                     <label>申请人:</label>
-                    <div class="content">{{patent.PA}}</div>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(2, $event)">{{patent.PA}}</div>
                   </div>
                   <div class="patent-item">
                     <label>发明人:</label>
-                    <div class="content">{{patent.IN}}</div>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(3, $event)">{{patent.IN}}</div>
                   </div>
                   <div class="patent-item">
                     <label>国省:</label>
-                    <div class="content">{{patent.CNAME}}</div>
+                    <div class="content" tabindex='-1' @keyup.18="markWord(4, $event)">{{patent.CNAME}}</div>
                   </div>
                 </div>
               </div>
@@ -173,6 +173,11 @@ export default {
       }
     },
     closeMark (mark) {
+      if (!mark.id) {
+        // this.markList.splice(this.markList.indexOf(mark), 1)
+        this.showMarks.splice(this.showMarks.indexOf(mark), 1)
+        return
+      }
       this.$confirm('此操作将删除该标引词, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -210,6 +215,23 @@ export default {
     nextPatent () {
       this.filterValue = 1
       this.$emit('next')
+    },
+    markWord (type, event) {
+      let word = this._getSelectText()
+      this.showMarks.push({
+        type,
+        word,
+        userId: window.localStorage.getItem('userId')
+      })
+    },
+    _getSelectText () {
+      let text = ''
+      if (window.getSelection) {
+        text = window.getSelection().toString()
+      } else if (document.selection && document.selection.type !== 'Control') {
+        text = document.selection.createRange().text
+      }
+      return text
     },
     ...mapActions('markModule', [
       'showMarkList',
@@ -308,6 +330,9 @@ export default {
     margin-left: 80px;
     line-height: 40px;
     font-size: 14px;
+  }
+  .patent-item .content:focus{
+    outline: none;
   }
   .dialog-footer{
     padding: 10px 20px 20px 20px;
