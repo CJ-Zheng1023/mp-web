@@ -6,7 +6,7 @@
           <i class="fa fa-compress" @click="closeDialog"></i>
         </div>
       </div>
-      <div class="dialog-body">
+      <div class="dialog-body" v-loading="loading">
         <div class="actions">
           <span @click="prevPatent" class="prev"><i class="fa fa-arrow-left"></i>上一篇</span>
           <span @click="nextPatent" class="next">下一篇<i class="fa fa-arrow-right"></i></span>
@@ -103,6 +103,7 @@ export default {
     return {
       filterValue: 1,
       closable: false,
+      loading: false,
       filterOptions: [
         {
           label: '全部标引',
@@ -184,6 +185,8 @@ export default {
               message: '删除成功!'
             })
             this.showMarkList(this.patent.NRD_AN).then(() => {
+              this.filterValue = 1
+              this.closable = false
               this.showMarks = this.markList
             })
           } else {
@@ -216,8 +219,10 @@ export default {
   watch: {
     patent (newValue, oldValue) {
       if (newValue.NRD_AN !== oldValue.NRD_AN) {
+        this.loading = true
         this.showMarkList(this.patent.NRD_AN).then(() => {
           this.showMarks = this.markList
+          this.loading = false
         })
       }
     },

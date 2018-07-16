@@ -1,5 +1,5 @@
 <template>
-  <div class="page page-search">
+  <div class="page page-search" v-loading="pageLoading">
     <search-header :ifSearch=true >
       <div slot="input">
         <el-form :inline=true :model="form">
@@ -31,7 +31,7 @@
           </div>
         </el-col>
         <el-col :span="16" v-if="patentList">
-          <div class="patent-list">
+          <div class="patent-list" v-loading="patentLoading">
             <el-row :gutter="15">
               <el-col v-for="patent in patentList" :key="patent.NRD_AN" :span="8">
                 <el-card class="box-card">
@@ -82,7 +82,9 @@ export default {
       },
       dialogVisible: false,
       currentPatent: {},
-      message: ''
+      message: '',
+      patentLoading: false,
+      pageLoading: false
     }
   },
   computed: {
@@ -98,10 +100,13 @@ export default {
       this.dialogVisible = true
     },
     clickPagination (curPage) {
+      this.patentLoading = true
       this.searchPatentList({
         ipc: this.form.ipc,
         size: this.pagination.size,
         start: (curPage - 1) * this.pagination.size
+      }).then(() => {
+        this.patentLoading = false
       })
     },
     onSubmit () {
@@ -144,16 +149,20 @@ export default {
   beforeRouteUpdate (to, from, next) {
     let ipc = to.params.ipc
     this.form.ipc = ipc
+    this.pageLoading = true
     this.search(ipc).then(() => {
       cache.cacheIpc(ipc)
-      next()
+      this.pageLoading = false
     })
+    next()
   },
   created () {
     let ipc = this.$route.params.ipc
     this.form.ipc = ipc
+    this.pageLoading = true
     this.search(ipc).then(() => {
       cache.cacheIpc(ipc)
+      this.pageLoading = false
     })
   }
 }
