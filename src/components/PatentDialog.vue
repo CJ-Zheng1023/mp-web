@@ -103,7 +103,6 @@ export default {
   data () {
     return {
       filterValue: 1,
-      closable: false,
       loading: false,
       btnLoading: false,
       filterOptions: [
@@ -126,6 +125,15 @@ export default {
     ...mapState('markModule', [
       'markList'
     ]),
+    closable () {
+      if (this.filterValue === 1) {
+        return false
+      } else if (this.filterValue === 2) {
+        return true
+      } else if (this.filterValue === 3) {
+        return false
+      }
+    },
     saved () {
       let flag = true
       for (let i = 0, length = this.markList.length; i < length; i++) {
@@ -225,15 +233,6 @@ export default {
         this.filterValue = 1
       }
     },
-    filterMarks (value) {
-      if (value === 1) {
-        this.closable = false
-      } else if (value === 2) {
-        this.closable = true
-      } else if (value === 3) {
-        this.closable = false
-      }
-    },
     closeMark (mark) {
       if (!mark.id) {
         this.markList.splice(this.markList.indexOf(mark), 1)
@@ -320,7 +319,8 @@ export default {
       }
       this.markList.push({
         type,
-        word
+        word,
+        userId: window.localStorage.getItem('userId')
       })
     },
     _getSelectText () {
