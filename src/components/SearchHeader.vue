@@ -38,7 +38,7 @@ export default {
     dropdownCommand (command) {
       if (command === 'logout') {
         this.deleteToken().then((data) => {
-          if (data.flag) {
+          if (data) {
             window.localStorage.removeItem('token')
             window.localStorage.removeItem('userId')
             window.localStorage.removeItem('username')
