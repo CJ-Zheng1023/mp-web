@@ -15,7 +15,7 @@
           <el-col :span="10">
             <div class="portlet">
               <div class="portlet-title">
-                <el-select @change="filterMarks" size="mini" v-model="filterValue" placeholder="请选择">
+                <el-select size="mini" v-model="filterValue" placeholder="请选择">
                   <el-option
                     v-for="item in filterOptions"
                     :key="item.value"
