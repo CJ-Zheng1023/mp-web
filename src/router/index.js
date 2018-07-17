@@ -31,7 +31,8 @@ let router = new Router({
       name: 'Search',
       component: Search,
       meta: {
-        title: '检索'
+        title: '检索',
+        requireAuth: true
       }
     },
     {
@@ -39,13 +40,24 @@ let router = new Router({
       name: 'Result',
       component: Result,
       meta: {
-        title: '检索结果'
+        title: '检索结果',
+        requireAuth: true
       }
     }
   ]
 })
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.title
+  let token = window.localStorage.getItem('token')
+  if (to.meta.requireAuth && !token) {
+    next({
+      path: '/',
+      query: { redirect: to.fullPath }
+    })
+  }
+  router.afterEach(() => {
+    window.scrollTo(0, 0)
+  })
   next()
 })
 export default router

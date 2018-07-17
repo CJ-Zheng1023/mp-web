@@ -33,7 +33,6 @@ export default {
           resolve()
         })).catch(e => {
           console.log(e)
-          reject(e)
         })
       })
     },
@@ -44,7 +43,6 @@ export default {
           resolve()
         }).catch(e => {
           console.log(e)
-          reject(e)
         })
       })
     }

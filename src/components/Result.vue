@@ -59,6 +59,7 @@
                   <el-pagination
                     @current-change="clickPagination"
                     background
+                    :current-page="currentPage"
                     layout="prev, pager, next"
                     :page-size="pagination.size"
                     :total="pagination.total">
@@ -99,6 +100,10 @@ export default {
     }
   },
   computed: {
+    currentPage () {
+      let pagination = this.pagination
+      return (pagination.start + pagination.size) / pagination.size
+    },
     ...mapState('searchModule', [
       'ipcResult',
       'patentList',

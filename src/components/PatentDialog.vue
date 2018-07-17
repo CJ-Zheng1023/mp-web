@@ -250,7 +250,6 @@ export default {
               message: '删除成功!'
             })
             this.showMarkList(this.patent.NRD_AN).then(() => {
-              this.filterValue = 1
               this.closable = false
               this.showMarks = this.markList
             })
