@@ -428,6 +428,8 @@ export default {
     margin-left: 80px;
     line-height: 40px;
     font-size: 14px;
+    word-break: break-all;
+    word-wrap: break-word;
   }
   .patent-item .content:focus{
     outline: none;
@@ -454,8 +456,10 @@ export default {
   }
   .marks-scroll{
     height: 310px;
+    overflow-y: auto;
   }
   .patent-scroll{
-    height: 348px;
+    height: 338px;
+    overflow-y: auto;
   }
 </style>

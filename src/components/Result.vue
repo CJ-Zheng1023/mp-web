@@ -210,6 +210,7 @@ export default {
   }
   .card-body{
     font-size: 14px;
+    line-height: 20px;
   }
   .card-body .ti{
     overflow: hidden;

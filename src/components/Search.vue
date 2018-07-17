@@ -63,14 +63,14 @@ export default {
 <style scoped>
   .el-form{
     text-align: center;
-    margin-top: 100px;
+    margin-top: 200px;
   }
   .el-input{
     width: 400px;
   }
   .tags{
     width: 430px;
-    margin: 0 auto 100px auto;
+    margin: 0 auto 150px auto;
   }
   .tag-item{
     display: inline-block;
