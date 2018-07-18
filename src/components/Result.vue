@@ -36,7 +36,7 @@
           </el-card>
         </el-col>
         <el-col :span="16" v-if="patentList">
-          <div class="patent-list" v-loading="patentLoading">
+          <div class="patent-list" v-show="!dialogVisible" v-loading="patentLoading">
             <el-row :gutter="15">
               <el-col v-for="patent in patentList" :key="patent.NRD_AN" :span="8">
                 <el-card class="box-card">
@@ -68,6 +68,7 @@
               </el-col>
             </el-row>
           </div>
+          <patent-dialog v-show="dialogVisible" :ipc="ipcResult.IC" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
         </el-col>
         <el-col :span="16" v-else>
           <el-card class="box-card">
@@ -76,8 +77,6 @@
         </el-col>
       </el-row>
     </div>
-    <patent-dialog v-if="ipcResult" :ipc="ipcResult.IC" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
-    <patent-dialog v-else :ipc="''" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
   </div>
 </template>
 <script>

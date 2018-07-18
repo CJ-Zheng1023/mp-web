@@ -358,22 +358,10 @@ export default {
 }
 </script>
 <style>
-  .patent-dialog-wrapper{
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, .5);
-  }
   .patent-dialog{
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1000px;
-    background-color: rgb(241, 243, 250);
-    border-radius: 2px;
+
+    background-color: rgba(233, 233, 233, .5);
+    border-radius: 7px;
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
   }
   .dialog-header{
@@ -388,7 +376,7 @@ export default {
     cursor: pointer;
   }
   .dialog-body{
-    padding: 30px 20px;
+    padding: 15px 20px 30px 20px;
   }
   .portlet{
     background-color: #fff;
