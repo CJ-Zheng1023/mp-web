@@ -8,8 +8,8 @@
       </div>
       <div class="dialog-body" v-loading="loading">
         <div class="actions">
-          <span @click="prevPatent" class="prev"><i class="fa fa-arrow-left"></i>上一篇</span>
-          <span @click="nextPatent" class="next">下一篇<i class="fa fa-arrow-right"></i></span>
+          <span @click="prevPatent" class="prev" tabindex="-1" @keyup.37="prevPatent"><i class="fa fa-arrow-left"></i>上一篇</span>
+          <span @click="nextPatent" class="next" tabindex="-1" @keyup.39="nextPatent">下一篇<i class="fa fa-arrow-right"></i></span>
         </div>
         <el-row :gutter="30">
           <el-col :span="10">
@@ -102,7 +102,7 @@ export default {
   },
   data () {
     return {
-      filterValue: 1,
+      filterValue: 2,
       loading: false,
       btnLoading: false,
       filterOptions: [
@@ -201,6 +201,7 @@ export default {
             confirmButtonText: '确定',
             type: 'success'
           }).then(action => {
+            this.$emit('mark')
             this.loading = true
             this.showMarkList(this.patent.NRD_AN).then(() => {
               this.loading = false
@@ -225,12 +226,12 @@ export default {
           type: 'warning'
         }).then(() => {
           this.$emit('close')
-          this.filterValue = 1
+          this.filterValue = 2
         }).catch(() => {
         })
       } else {
         this.$emit('close')
-        this.filterValue = 1
+        this.filterValue = 2
       }
     },
     closeMark (mark) {
@@ -274,12 +275,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.filterValue = 1
+          this.filterValue = 2
           this.$emit('prev')
         }).catch(() => {
         })
       } else {
-        this.filterValue = 1
+        this.filterValue = 2
         this.$emit('prev')
       }
     },
@@ -290,12 +291,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.filterValue = 1
+          this.filterValue = 2
           this.$emit('next')
         }).catch(() => {
         })
       } else {
-        this.filterValue = 1
+        this.filterValue = 2
         this.$emit('next')
       }
     },
@@ -354,6 +355,18 @@ export default {
         })
       }
     }
+  },
+  created () {
+    document.querySelector('body').addEventListener('keyup', (event) => {
+      if (!this.visible) {
+        return
+      }
+      if (event.keyCode === 37) {
+        this.prevPatent()
+      } else if (event.keyCode === 39) {
+        this.nextPatent()
+      }
+    })
   }
 }
 </script>
@@ -382,6 +395,7 @@ export default {
     background-color: #fff;
     box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
     padding: 12px 20px 15px 20px;
+    border-radius: 7px;
   }
   .portlet .portlet-title{
     text-align: right;
@@ -434,20 +448,20 @@ export default {
     float: left;
     cursor: pointer;
     font-size: 14px;
-    color: #a0a0a0;
+    color: #0366d6;
   }
   .actions .next{
     float: right;
     cursor: pointer;
     font-size: 14px;
-    color: #a0a0a0;
+    color: #0366d6;
   }
   .marks-scroll{
-    height: 310px;
+    height: 400px;
     overflow-y: auto;
   }
   .patent-scroll{
-    height: 338px;
+    height: 428px;
     overflow-y: auto;
   }
 </style>

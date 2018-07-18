@@ -18,14 +18,12 @@
           <div class="ipc-explain">
             <el-card class="box-card">
               <span slot="header" class="card-header-ipc">{{ipcResult.IC}}的中文含义</span>
-              <div class="card-body">
-                {{ipcResult.UTCN}}
+              <div class="card-body" v-html="utcnHtml">
               </div>
             </el-card>
             <el-card class="box-card">
               <span slot="header" class="card-header-ipc">{{ipcResult.IC}}的英文含义</span>
-              <div class="card-body">
-                {{ipcResult.UTEN}}
+              <div class="card-body" v-html="utenHtml">
               </div>
             </el-card>
           </div>
@@ -44,7 +42,7 @@
                     <i class="fa fa-expand" @click="showDialog(patent)"></i>
                   </div>
                   <div class="card-body">
-                    <p class="an">{{patent.NRD_AN}}</p>
+                    <p class="an" :class="[patent.marked=='true' ? 'done' : '']">{{patent.NRD_AN}}</p>
                     <el-tooltip placement="bottom-start">
                       <span slot="content">{{patent.TI}}</span>
                       <p class="ti">{{patent.TI}}</p>
@@ -68,7 +66,7 @@
               </el-col>
             </el-row>
           </div>
-          <patent-dialog v-show="dialogVisible" :ipc="ipcResult.IC" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
+          <patent-dialog v-show="dialogVisible" @mark="markPatent" :ipc="ipcResult.IC" :message="message" @prev="prevPatent" @next="nextPatent" :patent="currentPatent" @close="dialogVisible=false" :visible="dialogVisible"></patent-dialog>
         </el-col>
         <el-col :span="16" v-else>
           <el-card class="box-card">
@@ -102,6 +100,31 @@ export default {
     currentPage () {
       let pagination = this.pagination
       return (pagination.start + pagination.size) / pagination.size
+    },
+    utcnHtml () {
+      let arr = this.ipcResult.UTCN.split(';')
+      let html = '<div class="ipc-content">'
+      for (let i = 0, len = arr.length - 1; i < len; i++) {
+        if (i === arr.length - 2) {
+          html += `<p style="color: #409EFF;">${arr[i]}</p>`
+        } else {
+          html += `<p>${arr[i]}</p>`
+        }
+      }
+      html += '</div>'
+      return html
+    },
+    utenHtml () {
+      let arr = this.ipcResult.UTEN.split(';')
+      let html = '<div class="ipc-content">'
+      for (let i = 0, len = arr.length - 1; i < len; i++) {
+        if (i === arr.length - 2) {
+          html += `<p style="color: #409EFF;">${arr[i]}</p>`
+        } else {
+          html += `<p>${arr[i]}</p>`
+        }
+      }
+      return html
     },
     ...mapState('searchModule', [
       'ipcResult',
@@ -151,6 +174,9 @@ export default {
     },
     _setCurrentPatent (index) {
       this.currentPatent = this.patentList[index]
+    },
+    markPatent () {
+      this.currentPatent.marked = 'true'
     },
     ...mapActions('searchModule', [
       'searchPatentList',
@@ -206,6 +232,9 @@ export default {
   }
   .card-body .an, .card-body .ti{
     margin-top: 0;
+  }
+  .card-body .an.done{
+    color: #767e8d;
   }
   .card-body{
     font-size: 14px;
